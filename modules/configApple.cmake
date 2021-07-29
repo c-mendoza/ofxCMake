@@ -38,12 +38,12 @@ add_custom_command(
         TARGET ${APP_NAME}
         POST_BUILD
         COMMAND rsync
-        ARGS -aved ${CMAKE_SOURCE_DIR}/${OF_DIRECTORY_BY_USER}/libs/fmodex/lib/osx/libfmodex.dylib "$<TARGET_FILE_DIR:${APP_NAME}>/../Frameworks/"
+        ARGS -aved ${CMAKE_SOURCE_DIR}/${OF_DIRECTORY_BY_USER}/libs/fmod/lib/osx/libfmod.dylib "$<TARGET_FILE_DIR:${APP_NAME}>/../Frameworks/"
 )
 
 add_custom_command(
         TARGET ${APP_NAME}
         POST_BUILD
         COMMAND ${CMAKE_INSTALL_NAME_TOOL}
-        ARGS -change @executable_path/libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib $<TARGET_FILE:${APP_NAME}>
+        ARGS -change @executable_path/libfmod.dylib @executable_path/../Frameworks/libfmod.dylib $<TARGET_FILE:${APP_NAME}>
 )

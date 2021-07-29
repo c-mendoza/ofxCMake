@@ -1,24 +1,24 @@
 # ============================================================================
 # ---------------------------- Source Files ----------------------------------
 list(APPEND OF_SOURCE_FILES
-#     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/sound/ofBaseSoundStream.cpp
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/sound/ofSoundStream.cpp
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationVideoPlayer.m
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationPlayer.mm
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQTKitGrabber.mm
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQTKitMovieRenderer.m
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQTKitPlayer.mm
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQtUtils.cpp
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQuickTimeGrabber.cpp
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQuickTimePlayer.cpp
-     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/sound/ofRtAudioSoundStream.cpp
-     )
+        #     ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/sound/ofBaseSoundStream.cpp
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/sound/ofSoundStream.cpp
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationVideoPlayer.m
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationPlayer.mm
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQTKitGrabber.mm
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQTKitMovieRenderer.m
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQTKitPlayer.mm
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQtUtils.cpp
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQuickTimeGrabber.cpp
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofQuickTimePlayer.cpp
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/sound/ofRtAudioSoundStream.cpp
+        )
 
 # --- For xCode 8.1 and macOS 10.12 (Sierra)
 if (EXISTS "${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationGrabber.mm")
     list(APPEND OF_SOURCE_FILES
-         ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationGrabber.mm
-         )
+            ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofAVFoundationGrabber.mm
+            )
 endif ()
 
 # ============================================================================
@@ -29,21 +29,23 @@ set(HEADER_CAIRO ${OF_DIRECTORY_ABSOLUTE}/libs/cairo/include/cairo)
 set(HEADER_RTAUDIO ${OF_DIRECTORY_ABSOLUTE}/libs/rtAudio/include)
 set(HEADER_BOOST ${OF_DIRECTORY_ABSOLUTE}/libs/boost/include)
 set(HEADER_CURL ${OF_DIRECTORY_ABSOLUTE}/libs/curl/include)
+set(HEADER_FMOD ${OF_DIRECTORY_ABSOLUTE}/libs/fmod/include)
 
 # ------------------ Putting the includes into one list ----------------------
 list(APPEND OF_CORE_HEADERS
-     ${HEADER_GLEW}
-     ${HEADER_SSL}
-     ${HEADER_CAIRO}
-     ${HEADER_RTAUDIO}
-     ${HEADER_BOOST}
-     ${HEADER_CURL}
-     )
+        ${HEADER_GLEW}
+        ${HEADER_SSL}
+        ${HEADER_CAIRO}
+        ${HEADER_RTAUDIO}
+        ${HEADER_BOOST}
+        ${HEADER_CURL}
+        ${HEADER_FMOD}
+        )
 
 # ============================================================================
 # --------------------------------- Libraries --------------------------------
 set(LIB_GLUT "${OF_DIRECTORY_ABSOLUTE}/libs/glut/lib/osx/GLUT.framework")
-set(LIB_FMODEX ${OF_DIRECTORY_ABSOLUTE}/libs/fmodex/lib/osx/libfmodex.dylib)
+set(LIB_FMODEX ${OF_DIRECTORY_ABSOLUTE}/libs/fmod/lib/osx/libfmod.dylib)
 set(LIB_GLFW ${OF_DIRECTORY_ABSOLUTE}/libs/glfw/lib/osx/glfw3.a)
 set(LIB_FREEIMAGE ${OF_DIRECTORY_ABSOLUTE}/libs/FreeImage/lib/osx/freeimage.a)
 set(LIB_FREETYPE ${OF_DIRECTORY_ABSOLUTE}/libs/freetype/lib/osx/freetype.a)
@@ -61,19 +63,19 @@ set(LIB_URIPARSER ${OF_DIRECTORY_ABSOLUTE}/libs/uriparser/lib/osx/uriparser.a)
 set(LIB_CURL ${OF_DIRECTORY_ABSOLUTE}/libs/curl/lib/osx/curl.a)
 
 set(OF_CORE_LIBS
-    ${LIB_TESS}
-    ${LIB_GLEW}
-    ${LIB_CAIRO1} ${LIB_CAIRO2} ${LIB_CAIRO3} ${LIB_CAIRO}
-    ${LIB_FMODEX}
-    ${LIB_RTAUDIO}
-    ${LIB_GLFW}
-    ${LIB_FREEIMAGE}
-    ${LIB_FREETYPE}
-    ${LIB_BOOST_2} ${LIB_BOOST_3}
-    ${LIB_PUGIXML}
-    ${LIB_URIPARSER}
-    ${LIB_CURL}
-    )
+        ${LIB_TESS}
+        ${LIB_GLEW}
+        ${LIB_CAIRO1} ${LIB_CAIRO2} ${LIB_CAIRO3} ${LIB_CAIRO}
+        ${LIB_FMODEX}
+        ${LIB_RTAUDIO}
+        ${LIB_GLFW}
+        ${LIB_FREEIMAGE}
+        ${LIB_FREETYPE}
+        ${LIB_BOOST_2} ${LIB_BOOST_3}
+        ${LIB_PUGIXML}
+        ${LIB_URIPARSER}
+        ${LIB_CURL}
+        )
 # ============================================================================
 # ----------------------------- System Frameworks ----------------------------
 set(FRAMEWORKS_DIR /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks)
@@ -99,23 +101,23 @@ find_library(security_lib Security)
 find_library(ldap_lib LDAP)
 
 set(OF_CORE_FRAMEWORKS
-    ${accelerate_lib}
-    ${iokit_lib}
-    ${agl_lib}
-    ${applicationservices_lib}
-    ${audiotoolbox_lib}
-    ${coreaudio_lib}
-    ${corefoundation_lib}
-    ${coreservices_lib}
-    ${opengl_lib}
-    ${quicktime_lib}
-    ${corevideo_lib}
-    ${qtkit_lib}
-    ${cocoa_lib}
-    ${coremedia_lib}
-    ${avfoundation_lib}
-    ${quartzcore_lib}
-    ${appkit_lib}
-    ${security_lib}
-    ${ldap_lib}
-    )
+        ${accelerate_lib}
+        ${iokit_lib}
+        ${agl_lib}
+        ${applicationservices_lib}
+        ${audiotoolbox_lib}
+        ${coreaudio_lib}
+        ${corefoundation_lib}
+        ${coreservices_lib}
+        ${opengl_lib}
+        ${quicktime_lib}
+        ${corevideo_lib}
+        ${qtkit_lib}
+        ${cocoa_lib}
+        ${coremedia_lib}
+        ${avfoundation_lib}
+        ${quartzcore_lib}
+        ${appkit_lib}
+        ${security_lib}
+        ${ldap_lib}
+        )
