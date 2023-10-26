@@ -16,18 +16,11 @@ list( APPEND OF_CORE_HEADERS ${OF_DIRECTORY_ABSOLUTE}/libs/kiss/include)
 # ------------------------------ Libraries -----------------------------------
 
 # ---- shared
-set( LIB_FMODEX ${OF_DIRECTORY_ABSOLUTE}/libs/fmodex/lib/linux64/libfmodex.so )
+set( LIB_FMODEX ${OF_DIRECTORY_ABSOLUTE}/libs/fmod/lib/linux64/libfmod.so )
 
 set( OF_CORE_LIBS
         #${OF_DIRECTORY_ABSOLUTE}/libs/glfw/lib/linux64/libglfw3.a
         ${OF_DIRECTORY_ABSOLUTE}/libs/kiss/lib/linux64/libkiss.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoCrypto.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoFoundation.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoNet.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoNetSSL.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoUtil.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoXML.a
-        ${OF_DIRECTORY_ABSOLUTE}/libs/poco/lib/linux64/libPocoJSON.a
         ${OF_DIRECTORY_ABSOLUTE}/libs/tess2/lib/linux64/libtess2.a
         )
 
