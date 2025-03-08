@@ -24,6 +24,8 @@ target_link_libraries(of_static ${OF_ADDON_FRAMEWORKS} ${OF_CORE_LIBS} ${OF_CORE
 set_target_properties(of_static PROPERTIES OUTPUT_NAME openFrameworks)
 # set_target_properties(of_shared PROPERTIES OUTPUT_NAME openFrameworksShared)
 
+# message( STATUS "${OF_CMAKE_LIBS}" )
+
 # -------------------------- Copy OF Libs into CMake/libs --------------------
 set_target_properties(${OFX_ADDONS_ACTIVE}
                       PROPERTIES

@@ -13,18 +13,94 @@ endmacro( OF_include_internal_addOn )
 
 #==================================================================
 # ---- activate EXTERNAL addOn
-macro( OF_include_external_addOn NAME_ADDON )
-    if( ${NAME_ADDON} IN_LIST OFX_ADDONS_ACTIVE )
-        if( EXISTS ${OF_DIRECTORY_ABSOLUTE}/addons/${NAME_ADDON}/)
-            include( ${OF_CMAKE_ADDONS}/external/${NAME_ADDON}.cmake )
-            message( STATUS "${NAME_ADDON} activated" )
-        else()
-            message( WARNING "${NAME_ADDON} folder not found" )
-        endif()
-    endif()
-endmacro( OF_include_external_addOn )
+ macro( OF_include_external_addOn NAME_ADDON )
+     if( ${NAME_ADDON} IN_LIST OFX_ADDONS_ACTIVE )
+         if( EXISTS ${OF_DIRECTORY_ABSOLUTE}/addons/${NAME_ADDON}/)
+             include( ${OF_CMAKE_ADDONS}/external/${NAME_ADDON}.cmake )
+             message( STATUS "${NAME_ADDON} activated" )
+         else()
+             message( WARNING "${NAME_ADDON} folder not found" )
+         endif()
+     endif()
+ endmacro( OF_include_external_addOn )
 
+# ---- activate Local addOn
+macro( OF_include_local_addOn NAME_ADDON )
+        set(GLOBAL_ADDON_PATH "${OF_DIRECTORY_ABSOLUTE}/addons/${NAME_ADDON}")
+        set(LOCAL_ADDON_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${NAME_ADDON}")
+        set(ADDON_CONFIG ${OF_CMAKE_ADDONS}/external/${NAME_ADDON}.cmake)
+
+        if( EXISTS ${LOCAL_ADDON_PATH} )
+            message(STATUS "Activating Local Addon from:\n ${LOCAL_ADDON_PATH}")
+            of_load_generic_addon(${LOCAL_ADDON_PATH} ${NAME_ADDON})
+        else()
+            message( WARNING "${NAME_ADDON} folder not found in both addon paths" )
+        endif()
+    message( STATUS "-------------------" )
+endmacro()
+
+macro(of_load_generic_addon ADDON_PATH NAME_ADDON)
+    set( PATH_SRC       ${ADDON_PATH}/src )
+    set( PATH_LIBS      ${ADDON_PATH}/libs )
+
+    file( GLOB_RECURSE   OFX_ADDON_CPP          "${PATH_SRC}/*.cpp" )
+    file( GLOB_RECURSE   OFX_ADDON_LIBS_CPP     "${PATH_LIBS}/*.cpp" )
+    add_library(  ${NAME_ADDON}   STATIC   ${OFX_ADDON_CPP} ${OFX_ADDON_LIBS_CPP} )
+
+    OF_find_header_directories( HEADERS_SOURCE ${PATH_SRC} )
+    OF_find_header_directories( HEADERS_LIBS ${PATH_LIBS} )
+#    message(STATUS ${HEADERS_SOURCE})
+    message(STATUS "---")
+    message(STATUS ${HEADERS_LIB})
+    include_directories( ${PATH_SRC} )
+    find_addon_include_dirs(${ADDON_PATH} ADDON_INCLUDE_DIRS)
+    message(STATUS "Found include directories: ${ADDON_INCLUDE_DIRS}")
+    include_directories( ${ADDON_INCLUDE_DIRS} )
+endmacro()
+
+
+function(find_addon_include_dirs ADDON_PATH OUT_INCLUDE_DIRS)
+    set(INCLUDE_DIRS "")
+
+    # Check if the 'libs' directory exists
+    set(LIBS_PATH "${ADDON_PATH}/libs")
+    if(NOT EXISTS ${LIBS_PATH})
+        message(WARNING "No 'libs' directory found in ${ADDON_PATH}")
+        set(${OUT_INCLUDE_DIRS} "" PARENT_SCOPE)
+        return()
+    endif()
+
+    # Loop through directories inside 'libs'
+    file(GLOB LIB_DIRS LIST_DIRECTORIES true "${LIBS_PATH}/*")
+    foreach(LIB_DIR ${LIB_DIRS})
+        if(IS_DIRECTORY ${LIB_DIR})
+            set(INCLUDE_PATH "${LIB_DIR}/include")
+
+            # If 'include' directory exists, add it, otherwise add LIB_DIR itself
+            if(EXISTS ${INCLUDE_PATH})
+                list(APPEND INCLUDE_DIRS ${INCLUDE_PATH})
+            else()
+                list(APPEND INCLUDE_DIRS ${LIB_DIR})
+            endif()
+        endif()
+    endforeach()
+
+    # Return the list of include directories
+    set(${OUT_INCLUDE_DIRS} "${INCLUDE_DIRS}" PARENT_SCOPE)
+endfunction()
 #==================================================================
+
+# macro( OF_include_external_addOn NAME_ADDON )
+#     if( ${NAME_ADDON} IN_LIST OFX_ADDONS_ACTIVE )
+#         if( EXISTS ${OF_DIRECTORY_ABSOLUTE}/addons/${NAME_ADDON}/)
+#             include( ${OF_CMAKE_ADDONS}/external/${NAME_ADDON}.cmake )
+#             message( STATUS "${NAME_ADDON} activated" )
+#         else()
+#             message( WARNING "${NAME_ADDON} folder not found" )
+#         endif()
+#     endif()
+# endmacro( OF_include_external_addOn )
+
 
 # TODO Find also .hpp files
 # ---- Find all include directories

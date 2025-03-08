@@ -20,6 +20,14 @@ set(OF_CMAKE_LIBS ${OF_DIRECTORY_ABSOLUTE}/${CMAKE_PATH_NAME}/libs)
 # ============================================================================
 include(${OF_CMAKE_MODULES}/addOns.cmake)
 
+ foreach(ADDON IN LISTS OFX_ADDONS_ACTIVE)
+     OF_include_external_addOn(${ADDON})
+ endforeach()
+
+foreach(ADDON IN LISTS OFX_LOCAL_ADDONS)
+    OF_include_local_addOn(${ADDON})
+endforeach()
+
 
 # ============================================================================
 # -------------------------------- OF SOURCE FILES ---------------------------
