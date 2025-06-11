@@ -31,6 +31,7 @@ target_link_libraries(${APP_NAME}
         ${USER_LIBS}
         ${OFX_ADDONS_ACTIVE}
         ${OFX_LOCAL_ADDONS}
+        ${OFX_INTERNAL_ADDONS}
 )
 
 # ============================================================================
