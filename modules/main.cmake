@@ -3,36 +3,25 @@
 cmake_policy(SET CMP0057 NEW)
 
 # ============================================================================
-# ---------------------------------- PATHS -----------------------------------
+# ---------------------------------- ofxCMake paths -----------------------------------
 # ============================================================================
 # --- Set an absolute path name, in case the project used a relative one
 get_filename_component(OF_DIRECTORY_ABSOLUTE ${OF_DIRECTORY_BY_USER} ABSOLUTE)
 set(CMAKE_PATH_NAME addons/ofxCMake)
 set(OF_CMAKE_MODULES ${OF_DIRECTORY_ABSOLUTE}/${CMAKE_PATH_NAME}/modules)
-set(OF_CMAKE_ADDONS ${OF_DIRECTORY_ABSOLUTE}/${CMAKE_PATH_NAME}/addOns)
+set(OF_CMAKE_ADDONS ${OF_DIRECTORY_ABSOLUTE}/${CMAKE_PATH_NAME}/addons)
 set(OF_CMAKE_LIBS ${OF_DIRECTORY_ABSOLUTE}/${CMAKE_PATH_NAME}/libs)
 
+message(STATUS ${OF_CMAKE_ADDONS})
 
 # ============================================================================
 # --------------------------------- ADDONS -----------------------------------
-# --- Include all addOn .cmake files.
-# --- Libs are only linked, if set in the project CMakeLists.txt
 # ============================================================================
-#include(${OF_CMAKE_MODULES}/addOns.cmake)
-include(${OF_CMAKE_MODULES}/addOnsMacros.cmake)
+include(${OF_CMAKE_MODULES}/addons.cmake)
 
-foreach(ADDON IN LISTS OFX_INTERNAL_ADDONS)
-    OF_include_internal_addOn(${ADDON})
-endforeach()
-
- foreach(ADDON IN LISTS OFX_ADDONS_ACTIVE)
-     OF_include_external_addOn(${ADDON})
- endforeach()
-
-foreach(ADDON IN LISTS OFX_LOCAL_ADDONS)
-    OF_include_local_addOn(${ADDON})
-endforeach()
-
+foreach (addon IN LISTS OF_ADDONS)
+    OF_include_addOn(${addon})
+endforeach ()
 
 # ============================================================================
 # -------------------------------- OF SOURCE FILES ---------------------------
@@ -41,10 +30,10 @@ include(${OF_CMAKE_MODULES}/openFrameworks.cmake)
 
 if (APPLE) # Apple is a Unix, too. So dont ask only first UNIX
     include(${OF_CMAKE_MODULES}/openFrameworksApple.cmake)
-elseif (UNIX)
-    include(${OF_CMAKE_MODULES}/openFrameworksLinux.cmake)
-elseif (WIN32)
-    include(${OF_CMAKE_MODULES}/openFrameworksWindows.cmake)
+#elseif (UNIX)
+#    include(${OF_CMAKE_MODULES}/openFrameworksLinux.cmake)
+#elseif (WIN32)
+#    include(${OF_CMAKE_MODULES}/openFrameworksWindows.cmake)
 else ()
     message(FATAL_ERROR "Operating System not supported")
 endif ()
@@ -69,8 +58,11 @@ endif ()
 # ============================================================================
 # ------------------------------- APP CONFIGURATION --------------------------
 # ============================================================================
-#add_dependencies( ${APP_NAME} of_shared )
+
 set(OUTPUT_APP_NAME ${APP_NAME})
+
+# Add all addons as dependencies
+add_dependencies( ${APP_NAME} ${OF_ADDONS} )
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set(OUTPUT_APP_NAME "${APP_NAME}_debug")
