@@ -1,9 +1,17 @@
 ![ofxCMake Logo](ofxCMake_Logo.jpg)
 
-# CMake for OpenFrameworks [Vers. 0.2]
-ofxCMake enables you to easily compile [OpenFrameworks](http://openframeworks.cc) projects using [CMake](https://cmake.org). The primary goal for its creation was to enable the use of Jetbrains' [CLion](https://www.jetbrains.com/clion/) in OF application development, but it should work in any other IDE that supports CMake, as well as in the command line.
+# CMake for OpenFrameworks
+ofxCMake2 enables you to easily compile [openFrameworks](http://openframeworks.cc) projects using [CMake](https://cmake.org).
+
+
+
+
 
 This fork was originally created to give [almul0's fork](https://github.com/almul0/ofxCMake) of BuildPeter's [ofxCMake](https://github.com/BildPeter/ofxCMake) compatibility with OpenFrameworks 0.10.0, but it has evolved to work in a slightly different way than both.
+
+The primary goal for its creation was to enable the use of Jetbrains' [CLion](https://www.jetbrains.com/clion/) in OF application development, but it should work in any other IDE that supports CMake, as well as in the command line.
+
+
 
 Tested on macOS 10.11, 10.13, OF "0.10.0" (the master branch as of January 2018).
 

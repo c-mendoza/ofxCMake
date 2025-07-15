@@ -62,7 +62,9 @@ endif ()
 set(OUTPUT_APP_NAME ${APP_NAME})
 
 # Add all addons as dependencies
-add_dependencies( ${APP_NAME} ${OF_ADDONS} )
+if (OF_ADDONS)
+    add_dependencies( ${APP_NAME} ${OF_ADDONS} )
+endif ()
 
 if (CMAKE_BUILD_TYPE MATCHES Debug)
     set(OUTPUT_APP_NAME "${APP_NAME}_debug")
