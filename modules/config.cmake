@@ -14,10 +14,11 @@ add_library(core OBJECT ${OF_SOURCE_FILES})
 add_library(of_static STATIC $<TARGET_OBJECTS:core>)
 # add_library(of_shared SHARED $<TARGET_OBJECTS:core>)
 
+target_compile_definitions(of_static PUBLIC BOOST_ALL_NO_LIB)
 
 # -------------------------------- Linking --------------------------------
 #TODO is OF_CORE_FRAMEWORKS OSX specific?
-target_link_libraries(of_static ${OF_ADDON_FRAMEWORKS} ${OF_CORE_LIBS} ${OF_CORE_FRAMEWORKS})
+target_link_libraries(of_static PUBLIC ${OF_ADDON_FRAMEWORKS} ${OF_CORE_LIBS} ${OF_CORE_FRAMEWORKS})
 # target_link_libraries(of_shared ${OF_ADDON_FRAMEWORKS} ${OF_CORE_LIBS} ${OF_CORE_FRAMEWORKS} )
 
 # -------------------------------- Properties --------------------------------

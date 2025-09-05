@@ -1,119 +1,153 @@
 
-list( APPEND OF_SOURCE_FILES
+list(APPEND OF_SOURCE_FILES
         ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofDirectShowGrabber.cpp
         ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofDirectShowPlayer.cpp
-        )
-
-include_directories( "${OF_DIRECTORY_ABSOLUTE}/src/videoinput" )
-
-#--------------------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------------------
-
-set(OF_AUDIO ON) # Do not turn off
-set(OF_VIDEO ON) # Do not turn off
-
-set(OF_32BIT OFF CACHE BOOL "Compile for 32-bit architectures")
-
-set(VIDEOINPUT_SOURCES
-        "${OF_ROOT_DIR}/src/videoinput/videoInput.cpp"
-        )
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video/ofMediaFoundationPlayer.cpp
+)
 
 
-if(OF_STATIC)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${OF_ROOT_DIR}/lib-windows/release-${OF_PLATFORM}-${ARCH_BIT}")
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY_DEBUG   "${OF_ROOT_DIR}/lib-windows/debug-${OF_PLATFORM}-${ARCH_BIT}")
-else()
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE "${OF_ROOT_DIR}/lib-windows/release-${OF_PLATFORM}-${ARCH_BIT}")
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   "${OF_ROOT_DIR}/lib-windows/debug-${OF_PLATFORM}-${ARCH_BIT}")
-endif()
+list(APPEND OF_CORE_HEADERS
+        ${OF_DIRECTORY_ABSOLUTE}/libs/glew/include
+        ${OF_DIRECTORY_ABSOLUTE}/libs/openssl/include
+        ${OF_DIRECTORY_ABSOLUTE}/libs/cairo/include/cairo
+        ${OF_DIRECTORY_ABSOLUTE}/libs/rtAudio/include
+        ${OF_DIRECTORY_ABSOLUTE}/libs/boost/include
+        ${OF_DIRECTORY_ABSOLUTE}/libs/curl/include
+)
 
-set(OPENFRAMEWORKS_DEFINITIONS
-        -D_WIN32_WINNT=0x0501
-        -DOF_USING_MPG123
-        -DOF_SOUNDSTREAM_RTAUDIO
-        -DOF_SOUND_PLAYER_OPENAL
-        -DOF_VIDEO_CAPTURE_DIRECTSHOW
-        -DOF_VIDEO_PLAYER_DIRECTSHOW
-        )
+set(WIN_LIB_NAMES
+        boost
+        cairo
+        curl
+        fmod
+        FreeImage
+        freetype
+        glew
+        glfw
+        glm
+        json
+        libpng
+        openssl
+        pixman
+        pugixml
+        rtAudio
+        tess2
+        uriparser
+        utf8
+        videoInput
+        zlib
+)
 
-pkg_check_modules(CAIRO REQUIRED cairo)
-pkg_check_modules(FONTCONFIG REQUIRED fontconfig)
+set(WIN_ARCH "x64")
 
-find_package(OpenAL REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(MPG123 REQUIRED)
-find_package(Freetype REQUIRED)
-find_package(Boost COMPONENTS filesystem system REQUIRED)
+set(OF_CORE_LIBS
+)
 
-list(APPEND OPENFRAMEWORKS_INCLUDE_DIRS
-        ${CAIRO_INCLUDE_DIRS}
-        ${Boost_INCLUDE_DIRS}
-        ${OPENAL_INCLUDE_DIR}
-        ${OPENGL_INCLUDE_DIR}
-        ${MPG123_INCLUDE_DIRS}
-        ${FREETYPE_INCLUDE_DIRS}
-        ${FONTCONFIG_INCLUDE_DIRS}
-        )
+set(OF_LIB_DIRS )
+set(OF_LIB_FILES )
 
-if(CMAKE_SYSTEM MATCHES Windows)
-    add_dependencies(
-            openFrameworks
-            videoinput
-    )
-endif()
-
-if(CMAKE_SYSTEM MATCHES Windows)
-    target_link_libraries(
-            videoinput
-            ${STRMIIDS_LIB}
-    )
-endif()
-
-if(CMAKE_SYSTEM MATCHES Windows)
-    list(APPEND OPENFRAMEWORKS_LIBRARIES
-            videoinput
-            )
-endif()
-
-# --- Shared
+foreach (LIB ${WIN_LIB_NAMES})
+    set(INCLUDE_DIR ${OF_DIRECTORY_ABSOLUTE}/libs/${LIB}/include)
+    if (EXISTS ${INCLUDE_DIR})
+        list(APPEND OF_CORE_HEADERS ${INCLUDE_DIR})
+    endif ()
+    set(LIB_DIR ${OF_DIRECTORY_ABSOLUTE}/libs/${LIB}/lib/vs/${WIN_ARCH})
+    file(GLOB LIB_FILES "${LIB_DIR}/*.lib")
+#    foreach(LIB_FILE ${LIB_FILES})
+#        get_filename_component(NAME_ONLY ${LIB_FILE} NAME)
+#        list(APPEND OF_CORE_LIBS ${NAME_ONLY})
+#    endforeach()
+    list(APPEND OF_CORE_LIBS ${LIB_FILES})
+    list(APPEND OF_LIB_DIRS ${LIB_DIR})
+endforeach ()
 
 
+#message(STATUS "OF_CORE_LIBS = ${OF_CORE_LIBS}")
 
-#--------------------------------------------------------------------------------------------
-#--------------------------------------------------------------------------------------------
+set(OF_SYSTEM_LIBS
+        msimg32
+        OpenGL32
+        kernel32
+        setupapi
+        Vfw32
+        comctl32
+        dsound
+        user32
+        gdi32
+        winspool
+        comdlg32
+        advapi32
+        shell32
+        ole32
+        oleaut32
+        uuid
+        glew32s
+        crypt32
+        libcurl
+        Ws2_32
+        winmm
+        odbc32
+        odbccp32
+        wldap32
+        mf
+        mfplat
+        mfuuid
+        d3d11
+        mfreadwrite
+        xaudio2
+)
 
-set(OPENFRAMEWORKS_DEFINITIONS
-        -DOF_USING_MPG123
-        -DOF_SOUNDSTREAM_RTAUDIO
-        -DOF_SOUND_PLAYER_OPENAL
-        -DOF_VIDEO_CAPTURE_DIRECTSHOW
-        -DOF_VIDEO_PLAYER_DIRECTSHOW
-        )
+list(APPEND OF_CORE_LIBS ${OF_SYSTEM_LIBS})
 
-if(CMAKE_BUILD_TYPE MATCHES Release)
-    set(OF_LIB_DIR "${OF_ROOT_DIR}/lib-windows/release-${OF_PLATFORM}-${ARCH_BIT}")
-elseif(CMAKE_BUILD_TYPE MATCHES Debug)
-    set(OF_LIB_DIR "${OF_ROOT_DIR}/lib-windows/debug-${OF_PLATFORM}-${ARCH_BIT}")
-endif()
-
-
-if(NOT OF_CONSOLE)
-    list(APPEND OPENFRAMEWORKS_LIBRARIES -mwindows)
-endif()
-
-
-list(APPEND OPENFRAMEWORKS_DEFINITIONS
-        -DWIN32
-        -DWINVER=0x0500
-        -D_WIN32_WINNT=0x0501
-        -D_UNICODE
-        -DUNICODE
-    )
-
-list(APPEND OFXSOURCES
-        "${OFXADDON_DIR}/libs/oscpack/src/ip/win32/NetworkingUtils.cpp"
-        "${OFXADDON_DIR}/libs/oscpack/src/ip/win32/UdpSocket.cpp"
-        )
-
+#foreach (item IN LISTS OF_CORE_LIBS)
+#    message(STATUS " - ${item}")
+#endforeach ()
+##
+#cairo-static.lib
+#pixman-1.lib
+#libpng.lib
+#zlib.lib
+#msimg32.lib
+#OpenGL32.lib
+#kernel32.lib
+#setupapi.lib
+#Vfw32.lib
+#comctl32.lib
+#rtAudioD.lib
+#videoInputD.lib
+#libfreetype.lib
+#FreeImage.lib
+#dsound.lib
+#user32.lib
+#gdi32.lib
+#winspool.lib
+#comdlg32.lib
+#advapi32.lib
+#shell32.lib
+#ole32.lib
+#oleaut32.lib
+#uuid.lib
+#glew32s.lib
+#fmod64_vc.lib
+#libssl.lib
+#libcrypto.lib
+#crypt32.lib
+#libcurl.lib
+#uriparser.lib
+#pugixmld.lib
+#Ws2_32.lib
+#tess2.lib
+#glfw3.lib
+#winmm.lib
+#odbc32.lib
+#odbccp32.lib
+#wldap32.lib
+#mf.lib
+#mfplat.lib
+#mfuuid.lib
+#d3d11.lib
+#mfreadwrite.lib
+#xaudio2.lib
+###
 
 # TODO Include OS specific Libs

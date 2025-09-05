@@ -1,13 +1,10 @@
 # ============================================================================
 # ---------------------------- Source Files ----------------------------------
-
-#file(   GLOB_RECURSE
-#        OF_SRC
-#        ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/*.cpp
-#        )
 #
-#set( OF_SOURCE_FILES
-#     ${OF_SRC} )
+#set(OF_SOURCE_FILES
+#)
+
+
 set(OF_SOURCE_FILES
         ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/3d/of3dPrimitives.cpp
         ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/3d/of3dUtils.cpp
@@ -92,7 +89,6 @@ set(HEADER_OF_10 ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/utils)
 set(HEADER_OF_11 ${OF_DIRECTORY_ABSOLUTE}/libs/openFrameworks/video)
 set(HEADER_FREETYPE ${OF_DIRECTORY_ABSOLUTE}/libs/freetype/include)
 set(HEADER_FREETYPE2 ${OF_DIRECTORY_ABSOLUTE}/libs/freetype/include/freetype2)
-#set(HEADER_POCO ${OF_DIRECTORY_ABSOLUTE}/libs/poco/include)
 set(HEADER_FMODEX ${OF_DIRECTORY_ABSOLUTE}/libs/fmod/include)
 set(HEADER_FREEIMAGE ${OF_DIRECTORY_ABSOLUTE}/libs/FreeImage/include)
 set(HEADER_TESS2 ${OF_DIRECTORY_ABSOLUTE}/libs/tess2/include)
